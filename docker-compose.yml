@@ -1,0 +1,20 @@
+services:
+  rembg:
+    image: danielgatis/rembg:latest
+    restart: unless-stopped
+    command: ["s", "--host", "0.0.0.0", "--port", "7000"]
+    volumes:
+      - rembg_models:/root/.u2net
+    ports:
+      - "127.0.0.1:7000:7000"
+
+  tg-bgrem:
+    image: ghcr.io/koresent/tg-bgrem:latest
+    container_name: tg-bgrem
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      - rembg
+
+volumes:
+  rembg_models:
